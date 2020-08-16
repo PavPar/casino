@@ -14,28 +14,28 @@
     </header>
     <main class="auth">
         <nav class="navbar navbar_position-top">
-            <button class="button button_type-login" type="submit">Войти</button>
+            <button class="button button_type-login" disabled="true">Войти</button>
             <button class="button button_type-register">Зарегестрироваться</button>
         </nav>
 
-        <form class="form" name="formLog">
-            <input class="form__input" name="userLogin" placeholder="Логин" minlength="3" maxlength="20">
+        <form class="form" name="formLog" action="../php/userAuth.php" method="post">
+            <input class="form__input" name="login" placeholder="Логин" minlength="3" maxlength="20" required>
 
-            <input class="form__input" name="userPassword" placeholder="Пароль" type="password" minlength="3"
-                maxlength="30">
-            <button class="button button_type-submit">Войти</button>
+            <input class="form__input" name="password" placeholder="Пароль" type="password" minlength="3" maxlength="30"
+                required>
+            <button class="button button_type-submit" type="submit">Войти</button>
         </form>
 
         <form class="form form_visibility-hidden" name="formReg">
-            <input class="form__input" placeholder="Имя">
-            <input class="form__input" placeholder="Фамилия">
+            <input class="form__input" placeholder="Имя" required>
+            <input class="form__input" placeholder="Фамилия" required>
             <input class="form__input" placeholder="Отчество">
 
-            <input class="form__input" placeholder="Имя пользователя" minlength="3" maxlength="20">
-            <input class="form__input" placeholder="Пароль" type="password">
+            <input class="form__input" placeholder="Имя пользователя" minlength="3" maxlength="20" required>
+            <input class="form__input" placeholder="Пароль" type="password" required>
 
-            <input class="form__input" placeholder="EMail" type="email">
-            <button class="button button_type-submit">Зарегестрироваться</button>
+            <input class="form__input" placeholder="EMail" type="email" required>
+            <button class="button button_type-submit" type="submit">Зарегестрироваться</button>
         </form>
     </main>
     <footer></footer>

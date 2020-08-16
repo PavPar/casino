@@ -7,6 +7,7 @@ $database = "db";
 $conn = new mysqli($servername, $username, $password, $database);
 
 session_start();
+
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -31,10 +32,57 @@ function getData($key, $mandatory)
 
 };
 
-//Проверка существования сессии => логина пользователя
-function userAuthCheck()
+//Проверка выполнения SQL запроса в бд
+function CheckQuerry($result, $sql)
 {
-    
+    global $conn;
+    if ($result) {
+        return $result;
+    } else {
+        die("Error: " . $sql . "<br>" . $conn->error);
+    }
 }
 
-?>
+//Выполнить запрос в БД
+function doQuerry($sql)
+{
+    global $conn;
+    $result = $conn->query($sql);
+    return CheckQuerry($result, $sql);
+}
+
+//Проверка что есть данные
+function checkForRows($result)
+{
+    if ($result) {
+        if ($result->num_rows > 0) {
+            return true;
+        }
+        return false;
+    }
+}
+
+//Получить массив (ключ,значение) из результата запроса
+function arrayFromRes($result)
+{
+    $res = array();
+    return $result->fetch_assoc();
+}
+
+//Получить все данные пользователя
+function getUserData($username)
+{
+    return doQuerry('SELECT * FROM user WHERE login = "' . $username . '"');
+}
+
+function checkUserPassword($username, $password)
+{
+    $userData = getUserData($username);
+    if (checkForRows($userData)) {
+        $userData = arrayFromRes($userData);
+        if ($userData['password'] == $password) {
+            return true;
+        }
+    }
+    return false;
+}
