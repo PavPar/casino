@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Онлайн Казино</title>
-    <link rel="stylesheet" type="text/css" href="./pages/index.css">
+    <link rel="stylesheet" type="text/css" href="./styles/index.css">
 </head>
 
 <body class="page">
@@ -19,15 +19,13 @@
         </section>
         <nav class="navbar">
 
-            <form class="form">
+            <form class="form" action="pages/userAuth.html">
                 <input class="form__input" name="userLogin" placeholder="Логин" minlength="3" maxlength="20">
-                <label class="form__errMsg">errmsg</label>
 
                 <input class="form__input" name="userPassword" placeholder="Пароль" type="password" minlength="3"
                     maxlength="30">
-                    <label class="form__errMsg"></label>
 
-                    <button class="button button_type-login" type="submit">Войти</button>
+                <button class="button button_type-login" type="submit">Войти</button>
                 <button class="button button_type-register">Зарегестрироваться</button>
             </form>
         </nav>

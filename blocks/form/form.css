@@ -1,0 +1,7 @@
+@import url(./__input/form__input.css);
+
+.form {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}

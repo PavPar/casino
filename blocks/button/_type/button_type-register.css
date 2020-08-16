@@ -1,0 +1,8 @@
+.button_type-register {
+    margin-bottom: 5px;
+    background-color: goldenrod;
+    color:whitesmoke;
+    height: 3em;
+    font-size: 1em;
+    text-transform: uppercase;
+}

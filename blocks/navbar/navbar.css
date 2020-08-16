@@ -1,0 +1,7 @@
+.navbar {
+    max-width: 25%;
+    width: 100%;
+    border-left: 2px black solid;
+    height: 85vh;
+    padding-left: 15px;
+}
