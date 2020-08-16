@@ -1,0 +1,30 @@
+@import url(../vendor/normalize.css);
+
+.header {}
+
+.header__title {
+    color: red;
+}
+
+.gamesContainer {}
+
+.navbar {}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    border: 1px red solid;
+}
+
+.form__input {
+}
+
+.form__errMsg {}
+
+.button {}
+
+.button_type-register {}
+
+.button_type-login {}
+
+.footer {}
