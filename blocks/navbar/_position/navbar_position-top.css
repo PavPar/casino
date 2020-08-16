@@ -1,0 +1,9 @@
+.navbar_position-top {
+   width: 100%;
+   border-bottom: 2px black solid;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-around;
+   margin-bottom: 15px;
+   margin-top: 30vh;
+}
