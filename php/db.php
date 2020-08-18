@@ -70,19 +70,43 @@ function arrayFromRes($result)
 }
 
 //Получить все данные пользователя
-function getUserData($username)
+function getUserData($field, $username)
 {
-    return doQuerry('SELECT * FROM user WHERE login = "' . $username . '"');
+    return doQuerry('SELECT * FROM user WHERE ' . $field . ' = "' . $username . '"');
 }
 
 function checkUserPassword($username, $password)
 {
-    $userData = getUserData($username);
+    $userData = getUserData('username', $username);
     if (checkForRows($userData)) {
         $userData = arrayFromRes($userData);
         if ($userData['password'] == $password) {
             return true;
         }
+    }
+    return false;
+}
+
+//Преобразовать массив данных в строку с разделителями
+function arrToString($arr)
+{
+    print_r($arr);
+    $arr = array_values($arr);
+    $res = "";
+    $res = $res . ' "' . $arr[0] . '"';
+    echo $res;
+    for ($i = 1; $i < count($arr); $i++) {
+        $res = $res . ', "' . $arr[$i] . '" ';
+    }
+    return $res;
+}
+
+//Производит сохранение данных пользователя в БД (если нет пользователя с таким же имененем и email)
+function saveUserData($userData)
+{
+    if (!checkForRows(getUserData('username', $userData['username'])) && !checkForRows(getUserData('email', $userData['email']))) {
+        doQuerry('INSERT INTO user VALUES (id,' . arrToString($userData) . ')');
+        return true;
     }
     return false;
 }

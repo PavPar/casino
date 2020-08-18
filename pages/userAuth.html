@@ -26,15 +26,15 @@
             <button class="button button_type-submit" type="submit">Войти</button>
         </form>
 
-        <form class="form form_visibility-hidden" name="formReg">
-            <input class="form__input" placeholder="Имя" required>
-            <input class="form__input" placeholder="Фамилия" required>
-            <input class="form__input" placeholder="Отчество">
+        <form class="form form_visibility-hidden" name="formReg" action="../php/userReg.php">
+            <input class="form__input" placeholder="Имя" name="firstname" required>
+            <input class="form__input" placeholder="Фамилия" name="lastname" required>
+            <input class="form__input" placeholder="Отчество" name="middlename">
 
-            <input class="form__input" placeholder="Имя пользователя" minlength="3" maxlength="20" required>
-            <input class="form__input" placeholder="Пароль" type="password" required>
+            <input class="form__input" placeholder="Имя пользователя" name="username" minlength="3" maxlength="20" required>
+            <input class="form__input" placeholder="Пароль" type="password" name="password" required>
 
-            <input class="form__input" placeholder="EMail" type="email" required>
+            <input class="form__input" placeholder="EMail" type="email" name="email" required>
             <button class="button button_type-submit" type="submit">Зарегестрироваться</button>
         </form>
     </main>
