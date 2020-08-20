@@ -11,5 +11,5 @@ if (checkUserPassword(getData("login", true), getData("password", true))) {
     $_SESSION["user"] = arrayFromRes(getUserProfileData(getData("login", true)));
     header("Location: ../index.html");
 } else {
-    header("Location: ../pages/userAuth.html");
+    header("Location: ../pages/userLogin.php");
 }
