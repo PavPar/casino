@@ -30,3 +30,8 @@ pairReg.btn.addEventListener('click', () => {
     showForm(pairReg);
     hideForm(pairLog);
 })
+
+
+
+//____
+

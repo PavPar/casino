@@ -77,7 +77,7 @@ function getFullUserData($field, $username)
 }
 
 function getUserProfileData($username){
-    return doQuerry('SELECT username,firstname,lastname,middlename, FROM user WHERE  username = "' . $username . '"');
+    return doQuerry('SELECT username, firstname, lastname, middlename FROM user WHERE  username = "' . $username . '"');
 }
 
 function checkUserPassword($username, $password)
