@@ -9,7 +9,7 @@ include "db.php";
 
 if (checkUserPassword(getData("login", true), getData("password", true))) {
     $_SESSION["user"] = arrayFromRes(getUserProfileData(getData("login", true)));
-    header("Location: ../index.html");
+    header("Location: ../index.php");
 } else {
     header("Location: ../pages/userLogin.php");
 }

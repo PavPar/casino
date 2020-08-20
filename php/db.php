@@ -69,14 +69,14 @@ function arrayFromRes($result)
     return $result->fetch_assoc();
 }
 
-
 //Получить все данные пользователя
 function getFullUserData($field, $username)
 {
     return doQuerry('SELECT * FROM user WHERE ' . $field . ' = "' . $username . '"');
 }
 
-function getUserProfileData($username){
+function getUserProfileData($username)
+{
     return doQuerry('SELECT username, firstname, lastname, middlename FROM user WHERE  username = "' . $username . '"');
 }
 
@@ -116,8 +116,24 @@ function saveUserData($userData)
     return false;
 }
 
-function checkAuth($authPage){
-    if(!array_key_exists('user', $_SESSION)){
-        header("Location: ".$authPage);
+function isUserLogged()
+{
+    if(array_key_exists('user', $_SESSION)){
+        return true;
     }
+    return false;
+}
+
+//Проверка и переход
+function checkAuth($authPage)
+{
+    if (isUserLogged) {
+        header("Location: " . $authPage);
+    }
+}
+
+//!!
+function getUserRole()
+{
+
 }
