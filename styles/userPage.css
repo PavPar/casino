@@ -1,16 +1,55 @@
 @import url(../vendor/normalize.css);
-
 @import url(../blocks/page/page.css);
 @import url(../blocks/button/button.css);
 @import url(../blocks/navbar/navbar.css);
 @import url(../blocks/form/form.css);
-
-.profile{
+.profile {
     display: flex;
     flex-direction: column;
     max-width: 520px;
+    min-height: 150px;
     margin: auto;
-    margin-top: 25vh;
+    margin-top: 20%;
     border-top: 1px black solid;
     border-bottom: 1px black solid;
+    padding: 25px;
+}
+
+.profile__avatar {
+    background-image: url('../images/profileDefault.jpg');
+    background-position: top center;
+    background-size: cover;
+    width: 150px;
+    height: 150px;
+    align-self: center;
+    margin: 15px;
+    border: 1px black solid;
+    border-radius: 50%;
+}
+
+.profile__title {
+    text-align: center;
+    font-size: 3em;
+    margin-bottom: 20px;
+}
+
+.profile__subtitle {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.button_type-money {
+    border: 1px black solid;
+    height: 3em;
+    font-size: 1.5em;
+    color: black;
+    margin-bottom: 5px;
+}
+
+.button_type-home {
+    border: 1px black solid;
+    height: 3em;
+    font-size: 1.5em;
+    color: black;
 }

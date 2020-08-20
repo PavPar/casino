@@ -69,15 +69,20 @@ function arrayFromRes($result)
     return $result->fetch_assoc();
 }
 
+
 //Получить все данные пользователя
-function getUserData($field, $username)
+function getFullUserData($field, $username)
 {
     return doQuerry('SELECT * FROM user WHERE ' . $field . ' = "' . $username . '"');
 }
 
+function getUserProfileData($username){
+    return doQuerry('SELECT username,firstname,lastname,middlename, FROM user WHERE  username = "' . $username . '"');
+}
+
 function checkUserPassword($username, $password)
 {
-    $userData = getUserData('username', $username);
+    $userData = getFullUserData('username', $username);
     if (checkForRows($userData)) {
         $userData = arrayFromRes($userData);
         if ($userData['password'] == $password) {
@@ -104,9 +109,15 @@ function arrToString($arr)
 //Производит сохранение данных пользователя в БД (если нет пользователя с таким же имененем и email)
 function saveUserData($userData)
 {
-    if (!checkForRows(getUserData('username', $userData['username'])) && !checkForRows(getUserData('email', $userData['email']))) {
+    if (!checkForRows(getFullUserData('username', $userData['username'])) && !checkForRows(getFullUserData('email', $userData['email']))) {
         doQuerry('INSERT INTO user VALUES (id,' . arrToString($userData) . ')');
         return true;
     }
     return false;
+}
+
+function checkAuth($authPage){
+    if(!array_key_exists('user', $_SESSION)){
+        header("Location: ".$authPage);
+    }
 }
