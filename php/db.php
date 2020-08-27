@@ -118,7 +118,7 @@ function saveUserData($userData)
 
 function isUserLogged()
 {
-    if(array_key_exists('user', $_SESSION)){
+    if (array_key_exists('user', $_SESSION)) {
         return true;
     }
     return false;
@@ -127,7 +127,7 @@ function isUserLogged()
 //Проверка и переход
 function checkAuth($authPage)
 {
-    if (isUserLogged) {
+    if (!isUserLogged()) {
         header("Location: " . $authPage);
     }
 }

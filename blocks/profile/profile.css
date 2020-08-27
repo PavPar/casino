@@ -1,0 +1,15 @@
+@import url(./__avatar/profile__avatar.css);
+@import url(./__subtitle/profile__subtitle.css);
+@import url(./__title/profile__title.css);
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    max-width: 520px;
+    min-height: 150px;
+    margin: auto;
+    margin-top: 20vh;
+    border-top: 1px black solid;
+    border-bottom: 1px black solid;
+    padding: 25px;
+}

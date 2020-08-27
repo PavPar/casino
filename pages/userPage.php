@@ -2,7 +2,7 @@
 <html lang="ru">
 <?php
 include "../php/db.php";
-checkAuth("./userAuth.html");
+checkAuth("./userLogin.php");
 
 ?>
 <head>
@@ -25,7 +25,7 @@ checkAuth("./userAuth.html");
 
             <form class="form" action="userAuth.html" method="POST">
                 <button class="button button_type-money" type="submit">Пополнить балланс</button>
-                <button class="button button_type-home" formaction="../index.html">На главную страницу</button>
+                <button class="button button_type-home" formaction="../index.php">На главную страницу</button>
             </form>
         </section>
     </main>
