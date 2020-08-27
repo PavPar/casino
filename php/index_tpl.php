@@ -10,6 +10,9 @@ function getTpl()
     
     if (isUserLogged()) {
         $parse->get_tpl(getcwd() . '\templates\index\index-user.tpl');
+        $parse->set_tpl('{LOGIN}', $_SESSION["user"]["username"]);
+        $parse->set_tpl('{FLM}', $_SESSION["user"]["firstname"] . " " . $_SESSION["user"]["lastname"] . " " . $_SESSION["user"]["middlename"]);
+        $parse->set_tpl('{BALANCE}', "0");
         // switch ($i) {
         //     case 0:
         //         echo "i equals 0";

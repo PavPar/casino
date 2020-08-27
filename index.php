@@ -1,5 +1,6 @@
 <?php 
 include "./php/index_tpl.php";
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">
