@@ -12,7 +12,9 @@
 
 @import url(../blocks/button/_type/button_type-money.css);
 @import url(../blocks/button/_type/button_type-home.css);
+@import url(../blocks/button/_type/button_type-logout.css);
 @import url(../blocks/profile/profile.css);
+
 
 
 .header {}

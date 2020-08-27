@@ -1,0 +1,7 @@
+.button_type-logout {
+    border: 1px black solid;
+    height: 3em;
+    font-size: 1.5em;
+    background-color: darkred;
+    color: wheat;
+}

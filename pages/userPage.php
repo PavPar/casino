@@ -17,7 +17,7 @@ checkAuth("./userLogin.php");
 
     </header>
     <main>
-        <section class="profile">
+        <section class="profile profile_position-center">
             <img class="profile__avatar">
             <h1 class="profile__title"><?php echo ($_SESSION["user"]["username"]); ?></h1>
             <p class="profile__subtitle">ФИО : <?php echo ($_SESSION["user"]["firstname"] . " " . $_SESSION["user"]["lastname"] . " " . $_SESSION["user"]["middlename"]) ?></p>
