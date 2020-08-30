@@ -69,6 +69,11 @@ function arrayFromRes($result)
     return $result->fetch_assoc();
 }
 
+function getFromTable($table, $field, $value)
+{
+    return doQuerry('SELECT * FROM ' . $table . ' WHERE ' . $field . ' = "' . $value . '"');
+}
+
 //Получить все данные пользователя
 function getFullUserData($field, $username)
 {
@@ -99,7 +104,7 @@ function arrToString($arr)
     $arr = array_values($arr);
     $res = "";
     $res = $res . ' "' . $arr[0] . '"';
-    echo $res;
+    // echo $res;
     for ($i = 1; $i < count($arr); $i++) {
         $res = $res . ', "' . $arr[$i] . '" ';
     }
@@ -110,8 +115,10 @@ function arrToString($arr)
 function saveUserData($userData)
 {
     if (!checkForRows(getFullUserData('username', $userData['username'])) && !checkForRows(getFullUserData('email', $userData['email']))) {
-        doQuerry('INSERT INTO user VALUES (id,' . arrToString($userData) . ')');
+        doQuerry('INSERT INTO user VALUES (id,' . arrToString($userData) . ',' . arrayFromRes(getFromTable('role', 'role_name', 'user'))['role_id'] . ')');
         return true;
+    } else {
+        echo ("DIDN't pass username/email check<br>");
     }
     return false;
 }
@@ -130,10 +137,4 @@ function checkAuth($authPage)
     if (!isUserLogged()) {
         header("Location: " . $authPage);
     }
-}
-
-//!!
-function getUserRole()
-{
-
 }

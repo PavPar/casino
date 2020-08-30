@@ -14,7 +14,7 @@
 @import url(../blocks/button/_type/button_type-home.css);
 @import url(../blocks/button/_type/button_type-logout.css);
 @import url(../blocks/profile/profile.css);
-
+@import url(../blocks/sessions/sessions.css);
 
 
 .header {}
