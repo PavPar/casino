@@ -1,0 +1,11 @@
+@import url(./__button/session__button.css);
+@import url(./__button/__type/session__button_type-join.css);
+@import url(./__info/session__info.css);
+@import url(./__name/session__name.css);
+@import url(./__players/session__players.css);
+
+.session{
+    display: grid;
+    grid-template-columns: 25% 50% 10% 15%;
+    border: 1px red solid;
+}

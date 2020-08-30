@@ -1,4 +1,5 @@
 @import url(./__navbar/sessions__navbar.css);
+@import url(./__list/sessions__list.css);
 
 .sessions{
     width: 100%;
