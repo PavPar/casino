@@ -1,3 +1,6 @@
 .sessions__list{
+    display: grid;
     overflow-y: scroll;
+    grid-auto-rows: 50px;
+    gap: 5px;
 }

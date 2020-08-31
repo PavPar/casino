@@ -74,6 +74,15 @@ function getFromTable($table, $field, $value)
     return doQuerry('SELECT * FROM ' . $table . ' WHERE ' . $field . ' = "' . $value . '"');
 }
 
+function getMultipleRowsArr($result)
+{
+    $res = array();
+    while ($row = $result->fetch_assoc()) {
+        // $row = array_values($row);
+        array_push($res, $row);
+    }
+    return $res;
+}
 //Получить все данные пользователя
 function getFullUserData($field, $username)
 {
@@ -138,3 +147,30 @@ function checkAuth($authPage)
         header("Location: " . $authPage);
     }
 }
+
+function getGameID($gamename)
+{
+    return arrayFromRes(getFromTable('game', 'game_name', $gamename))['game_id'];
+}
+
+function getStateID($statename)
+{
+    return arrayFromRes(getFromTable('session_state', 'state_name', $statename))['state_id'];
+}
+//Вернуть все сессии
+function getSessionInfo($session)
+{
+    return arrayFromRes($session);
+}
+
+function getSessions()
+{
+    return getMultipleRowsArr(doQuerry('SELECT * FROM session'));
+}
+
+//Создать игру
+function createSession($session_name, $session_info, $game_name)
+{
+    return doQuerry('INSERT INTO session VALUES(session_id,' . getGameID($game_name) . ',' . getStateID('open') . ',' . arrToString(array($session_name, $session_info)) . ')');
+}
+

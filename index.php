@@ -18,8 +18,23 @@ include "./php/index_tpl.php";
         <h1 class="header__title">Добро пожаловать в наше казино!</h1>
     </header>
     <main class="content">
-        <section class="gamesContainer">
-            Здесь будут игры
+    <section class="sessions">
+            <nav class="sessions__navbar">
+                <button>Записаться на игру</button>
+                <button>Записанные игры</button>
+                <button>Завершенные игры</button>
+            </nav>
+            <form class="sessions__list" action="" method="POST">
+            <?php 
+            $sessions = getSessions();
+            
+            for ($i = 0; $i < count($sessions); $i++) {
+                setCardTPL( $sessions[$i]['name'], $sessions[$i]['info'], "0", "0", $sessions[$i]['session_id']);
+            }
+            
+                 
+            ?>
+            </form>
         </section>
         <nav class="navbar navbar_position-right">
             <?php  getTpl();     ?>
