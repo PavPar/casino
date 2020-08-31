@@ -33,13 +33,13 @@ function getTpl()
 function setCardTPL($name, $info, $currplayers, $maxplayers, $session_id)
 {
     $parse = new parse_class;
-    
+
     if (isUserLogged()) {
         $parse->get_tpl(getcwd() . '\templates\index\session.tpl');
         $parse->set_tpl('{NAME}', $name);
         $parse->set_tpl('{INFO}', $info);
-        $parse->set_tpl('{CURRPLAYERS}', $currplayers);
-        $parse->set_tpl('{MAXPLAYERS}', $maxplayers);
+        $parse->set_tpl('{CURRPLAYERS}', countPlayers($session_id));
+        $parse->set_tpl('{MAXPLAYERS}', maxPlayers($session_id));
         $parse->set_tpl('{SESSION_ID}', $session_id);
     } else {
         $parse->get_tpl(getcwd() . '\templates\index\session-hollow.tpl');

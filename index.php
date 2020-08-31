@@ -24,7 +24,7 @@ include "./php/index_tpl.php";
                 <button>Записанные игры</button>
                 <button>Завершенные игры</button>
             </nav>
-            <form class="sessions__list" action="" method="POST">
+            <form class="sessions__list" action="./php/joingame.php" method="POST">
             <?php 
             $sessions = getSessions();
             

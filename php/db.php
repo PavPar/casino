@@ -91,7 +91,7 @@ function getFullUserData($field, $username)
 
 function getUserProfileData($username)
 {
-    return doQuerry('SELECT username, firstname, lastname, middlename FROM user WHERE  username = "' . $username . '"');
+    return doQuerry('SELECT id,username, firstname, lastname, middlename FROM user WHERE  username = "' . $username . '"');
 }
 
 function checkUserPassword($username, $password)
@@ -158,14 +158,32 @@ function getStateID($statename)
     return arrayFromRes(getFromTable('session_state', 'state_name', $statename))['state_id'];
 }
 //Вернуть все сессии
-function getSessionInfo($session)
+function getSessionInfo($session_id)
 {
-    return arrayFromRes($session);
+    return arrayFromRes(getFromTable('session', 'session_id', $session_id));
 }
 
 function getSessions()
 {
     return getMultipleRowsArr(doQuerry('SELECT * FROM session'));
+}
+
+function getGameInfo($game_id)
+{
+    return arrayFromRes(getFromTable('game', 'game_id', $game_id));
+}
+
+function countPlayers($session_id)
+{
+    return array_values(arrayFromRes(doQuerry('SELECT COUNT(user_id) as players FROM user_session WHERE session_id = ' . $session_id)))[0];
+}
+
+function maxPlayers($session_id)
+{
+    $sessionInfo = getSessionInfo($session_id);
+    $gameInfo = getGameInfo($sessionInfo['game_id']);
+
+    return $gameInfo['max_users'];
 }
 
 //Создать игру
@@ -174,3 +192,60 @@ function createSession($session_name, $session_info, $game_name)
     return doQuerry('INSERT INTO session VALUES(session_id,' . getGameID($game_name) . ',' . getStateID('open') . ',' . arrToString(array($session_name, $session_info)) . ')');
 }
 
+function checkSessionForState($session_id, $state)
+{
+    $sessionInfo = getSessionInfo($session_id);
+    $validity = true;
+
+    if (count($sessionInfo) == 1) {
+        $validity = false;
+        return $validity;
+    }
+
+    if ($sessionInfo['state_id'] != getStateID($state)) {
+        $validity = false;
+        return $validity;
+    }
+
+    return $validity;
+}
+
+function isUserInSession($user_id, $session_id)
+{
+    return checkForRows(doQuerry('SELECT * FROM user_session WHERE user_id = ' . $user_id . ' AND session_id = ' . $session_id));
+}
+
+function joinSession($user_id, $session_id, $bet)
+{
+    $sessionInfo = getSessionInfo($session_id);
+    $gameInfo = getGameInfo($sessionInfo['game_id']);
+
+    $flagJOIN = true;
+
+    if (!checkSessionForState($session_id, 'open')) {
+        $flagJOIN = false;
+        return "err - no session";
+    }
+
+    if (isUserInSession($user_id, $session_id)) {
+        $flagJOIN = false;
+        return "err - user already in session";
+    }
+
+    if (countPlayers($session_id) >= $gameInfo['max_users']) {
+        $flagJOIN = false;
+        return "err - too many users";
+    }
+
+    if (!($bet >= $gameInfo['min_bet'] && $bet <= $gameInfo['max_bet'])) {
+        $flagJOIN = false;
+        return "err - wrong bet value " . $gameInfo['min_bet'] . ' - ' . $bet . ' - ' . $gameInfo['max_bet'];
+    }
+
+    if ($flagJOIN) {
+        return doQuerry('INSERT INTO user_session VALUES(' . $user_id . ',' . $session_id . ',' . $bet . ')');
+    }
+}
+
+// echo (joinSession(1, 1, 1000));
+// print_r(checkSessionForState('1', 'open'));
