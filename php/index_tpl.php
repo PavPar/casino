@@ -45,8 +45,8 @@ function setCardTPL($name, $info, $currplayers, $maxplayers, $session_id)
         $parse->get_tpl(getcwd() . '\templates\index\session-hollow.tpl');
         $parse->set_tpl('{NAME}', $name);
         $parse->set_tpl('{INFO}', $info);
-        $parse->set_tpl('{CURRPLAYERS}', $currplayers);
-        $parse->set_tpl('{MAXPLAYERS}', $maxplayers);
+        $parse->set_tpl('{CURRPLAYERS}', countPlayers($session_id));
+        $parse->set_tpl('{MAXPLAYERS}', maxPlayers($session_id));
     }
     $parse->tpl_parse();
     echo $parse->template;

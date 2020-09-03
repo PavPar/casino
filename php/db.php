@@ -6,6 +6,7 @@ $database = "db";
 
 $conn = new mysqli($servername, $username, $password, $database);
 
+include getcwd() . "/php/games/random.php";
 session_start();
 
 if ($conn->connect_error) {
@@ -245,7 +246,111 @@ function joinSession($user_id, $session_id, $bet)
     if ($flagJOIN) {
         return doQuerry('INSERT INTO user_session VALUES(' . $user_id . ',' . $session_id . ',' . $bet . ')');
     }
+
+    if (countPlayers($session_id) == $gameInfo['max_users']) {
+        sessionStart($session_id);
+    }
 }
 
-// echo (joinSession(1, 1, 1000));
-// print_r(checkSessionForState('1', 'open'));
+function validateSession()
+{
+    //TODO: later....
+    return true;
+}
+
+//получаем класс игры
+function getGameClass($game_name)
+{
+    switch ($game_name) {
+        case "50/50":
+            return new random();
+            break;
+    }
+}
+
+function logData($msg, $filepath)
+{
+    $log = date('Y-m-d H:i:s') . $msg;
+    file_put_contents(__DIR__ . $filepath, $log . PHP_EOL, FILE_APPEND);
+}
+
+//Установить определенное состояние сесии
+function setSessionState($session_id, $state_id)
+{
+    return doQuerry('UPDATE session SET state_id = ' . $state_id . ' WHERE session_id = ' . $session_id);
+}
+
+//Установить выполнено ли пополнение
+function setUserHistoryComplition($session_id, $user_id, $fullfield)
+{
+    return doQuerry('
+    UPDATE user_session_history
+    SET fullfield = ' . $fullfield . '
+    WHERE user_id = ' . $user_id . '
+    AND session_id = ' . $session_id
+    );
+}
+
+//Сохранить информацию о проведенной игре
+function saveUserHistory($session_id, $user_id, $amount)
+{
+    return doQuerry('INSERT INTO user_session_history VALUES (' . $session_id . ',' . $user_id . ',' . $amount . ',0)');
+}
+
+function addToUserBankAccount($user_id, $amount)
+{
+    return doQuerry('
+    UPDATE user_bank
+    SET sum = sum + ' . $amount . '
+    WHERE user_id = ' . $user_id
+    );
+}
+
+//Получить ид пользователей сессии
+function getSessionUsers($session_id)
+{
+    $result = doQuerry('SELECT user_id,bet from user_session where session_id = ' . $session_id);
+    $res = array();
+    while ($row = $result->fetch_assoc()) {
+        $res[$row['user_id']] = $row['bet'];
+
+    }
+    return $res;
+};
+
+function sessionStart($session_id)
+{
+    if (!validateSession($session_id)) {
+        return false;
+    }
+    try {
+        setSessionState($session_id, getStateID('closed'));
+
+        $sessionInfo = getSessionInfo($session_id);
+        $gameInfo = getGameInfo($sessionInfo['game_id']);
+        $userData = getSessionUsers($session_id);
+
+        $class = getGameClass($gameInfo['game_name']);
+        $gameResults = $class->run($userData);
+
+        print_r($gameResults);
+
+        setSessionState($session_id, getStateID('finished'));
+
+        foreach ($gameResults as $id => $amount) {
+            saveUserHistory($session_id, $id, $amount);
+            if (addToUserBankAccount($id, $amount)) {
+                setUserHistoryComplition($session_id, $id, 1);
+            }
+        }
+
+    } catch (Exception $e) {
+        setSessionState($session_id, getStateID('failed'));
+        echo logData('Caught exception: ', $e->getMessage(), "\n", 'session-log.txt');
+    }
+
+    return;
+    //TODO: close session, set history, update user bank
+}
+
+sessionStart(1);
