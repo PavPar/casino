@@ -21,7 +21,7 @@ checkAuth("./userLogin.php");
             <img class="profile__avatar">
             <h1 class="profile__title"><?php echo ($_SESSION["user"]["username"]); ?></h1>
             <p class="profile__subtitle">ФИО : <?php echo ($_SESSION["user"]["firstname"] . " " . $_SESSION["user"]["lastname"] . " " . $_SESSION["user"]["middlename"]) ?></p>
-            <p class="profile__subtitle">Ваш балланс: <?php ?></p>
+            <p class="profile__subtitle">Ваш балланс: <?php echo (getUserMoney($_SESSION["user"]["id"]))?></p>
 
             <form class="form" action="userAuth.html" method="POST">
                 <button class="button button_type-money" type="submit">Пополнить балланс</button>

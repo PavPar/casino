@@ -6,7 +6,6 @@ $database = "db";
 
 $conn = new mysqli($servername, $username, $password, $database);
 
-include getcwd() . "/php/games/random.php";
 session_start();
 
 if ($conn->connect_error) {
@@ -306,6 +305,17 @@ function addToUserBankAccount($user_id, $amount)
     );
 }
 
+function getValueFromRes($res)
+{
+    return array_values(arrayFromRes($res))[0];
+}
+
+//Получить деньги пользователя
+function getUserMoney($user_id)
+{
+    return getValueFromRes(doQuerry('SELECT sum FROM user_bank WHERE user_id = ' . $user_id));
+}
+
 //Получить ид пользователей сессии
 function getSessionUsers($session_id)
 {
@@ -320,6 +330,7 @@ function getSessionUsers($session_id)
 
 function sessionStart($session_id)
 {
+    include getcwd() . "/php/games/random.php";
     if (!validateSession($session_id)) {
         return false;
     }
@@ -353,4 +364,4 @@ function sessionStart($session_id)
     //TODO: close session, set history, update user bank
 }
 
-sessionStart(1);
+// sessionStart(1);
