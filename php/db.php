@@ -39,7 +39,8 @@ function CheckQuerry($result, $sql)
     if ($result) {
         return $result;
     } else {
-        die("Error: " . $sql . "<br>" . $conn->error);
+        echo ("Error: " . $sql . "<br>" . $conn->error);
+        return false;
     }
 }
 
@@ -83,6 +84,12 @@ function getMultipleRowsArr($result)
     }
     return $res;
 }
+
+function getUserRole($user_id)
+{
+    return getValueFromRes(getFromTable('user', 'id', $user_id));
+}
+
 //Получить все данные пользователя
 function getFullUserData($field, $username)
 {
@@ -132,9 +139,27 @@ function saveUserData($userData)
     return false;
 }
 
+function getUserRoleID($role_name)
+{
+    return arrayFromRes(getFromTable('role', 'role_name', $role_name))['role_id'];
+}
+
 function isUserLogged()
 {
     if (array_key_exists('user', $_SESSION)) {
+        return true;
+    }
+    return false;
+}
+
+//Проверка на уровень пользователя
+function isUserAdmin($user_id)
+{
+    $user_roleID = getUserRole($user_id);
+    $role_id = getUserRoleID('admin');
+
+
+    if ($role_id == $user_roleID) {
         return true;
     }
     return false;
@@ -157,6 +182,7 @@ function getStateID($statename)
 {
     return arrayFromRes(getFromTable('session_state', 'state_name', $statename))['state_id'];
 }
+
 //Вернуть все сессии
 function getSessionInfo($session_id)
 {
@@ -350,7 +376,7 @@ function sessionStart($session_id)
 
         foreach ($gameResults as $id => $amount) {
             saveUserHistory($session_id, $id, $amount);
-            if (addToUserBankAccount($id, $amount)) {
+            if (addToUserBankAccount($id, $amount) != 1) {
                 setUserHistoryComplition($session_id, $id, 1);
             }
         }
@@ -361,7 +387,7 @@ function sessionStart($session_id)
     }
 
     return;
-    //TODO: close session, set history, update user bank
 }
 
-// sessionStart(1);
+
+// createSession("2", "3","50/50");

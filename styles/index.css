@@ -17,7 +17,7 @@
 
 @import url(../blocks/sessions/sessions.css);
 @import url(../blocks/session/session.css);
-
+@import url(../blocks/session/_type/session_type-option.css);
 
 .header {}
 
