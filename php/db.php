@@ -1,5 +1,5 @@
 <?php
-$servername = "localhost";
+$servername = "localhost:3306";
 $username = "root";
 $password = "vertrigo";
 $database = "db";
@@ -131,7 +131,7 @@ function arrToString($arr)
 function saveUserData($userData)
 {
     if (!checkForRows(getFullUserData('username', $userData['username'])) && !checkForRows(getFullUserData('email', $userData['email']))) {
-        doQuerry('INSERT INTO user VALUES (id,' . arrToString($userData) . ',' . arrayFromRes(getFromTable('role', 'role_name', 'user'))['role_id'] . ')');
+        doQuerry('INSERT INTO user VALUES (id,' . arrToString($userData) . ', ' . arrayFromRes(getFromTable('role', 'role_name', 'user'))['role_id'] . ')');
         return true;
     } else {
         echo ("DIDN't pass username/email check<br>");
@@ -289,7 +289,8 @@ function getGameClass($game_name)
     switch ($game_name) {
         case "50/50":
             return new random();
-            break;
+        case "rip_money":
+            return new solo();
     }
 }
 
@@ -306,40 +307,50 @@ function setSessionState($session_id, $state_id)
 }
 
 //Установить выполнено ли пополнение
-function setUserHistoryComplition($session_id, $user_id, $fullfield)
-{
-    return doQuerry('
-    UPDATE user_session_history
-    SET fullfield = ' . $fullfield . '
-    WHERE user_id = ' . $user_id . '
-    AND session_id = ' . $session_id
-    );
-}
+// function setUserHistoryComplition($session_id, $user_id, $fullfield)
+// {
+//     return doQuerry('
+//     UPDATE user_session_history
+//     SET fullfield = ' . $fullfield . '
+//     WHERE user_id = ' . $user_id . '
+//     AND session_id = ' . $session_id
+//     );
+// }
 
 //Сохранить информацию о проведенной игре
-function saveUserHistory($session_id, $user_id, $amount)
+function saveUserHistory($session_id, $user_id, $bank_id)
 {
-    return doQuerry('INSERT INTO user_session_history VALUES (' . $session_id . ',' . $user_id . ',' . $amount . ',0)');
+    return doQuerry('INSERT INTO user_session_history VALUES (' . $session_id . ',' . $user_id . ',' . $bank_id . ')');
 }
 
-function addToUserBankAccount($user_id, $amount)
+function addToUserBankEntry($user_id, $amount, $source)
 {
-    return doQuerry('
-    UPDATE user_bank
-    SET sum = sum + ' . $amount . '
-    WHERE user_id = ' . $user_id
-    );
+    return doQuerry('INSERT INTO user_bank_history VALUES (id,' . $user_id . ',' . $amount . ', "' . $source . '")');
 }
 
 function getValueFromRes($res)
 {
     return array_values(arrayFromRes($res))[0];
 }
+function getJsonFromRes($res)
+{
+    $rows = array();
+    while($row = $res->fetch_assoc()) {
+        $rows[] = $row;
+    }
+    return json_encode($rows);
+}
 
 //Получить деньги пользователя
 function getUserMoney($user_id)
 {
-    return getValueFromRes(doQuerry('SELECT sum FROM user_bank WHERE user_id = ' . $user_id));
+    return getValueFromRes(doQuerry('SELECT sum(amount) FROM user_bank_history WHERE user_id = ' . $user_id));
+}
+function getUserMoneyAgg($user_id) 
+{
+    return getJsonFromRes(doQuerry(' SELECT amount, @total := @total + amount as total
+    FROM user_bank_history, (SELECT @total := 0) as dummy WHERE user_id = ' . $user_id . '
+    ORDER BY id;'));
 }
 
 //Получить ид пользователей сессии
@@ -356,7 +367,8 @@ function getSessionUsers($session_id)
 
 function sessionStart($session_id)
 {
-    include getcwd() . "/php/games/random.php";
+    global $conn;
+    include getcwd() . "/php/games/solo.php";
     if (!validateSession($session_id)) {
         return false;
     }
@@ -375,10 +387,8 @@ function sessionStart($session_id)
         setSessionState($session_id, getStateID('finished'));
 
         foreach ($gameResults as $id => $amount) {
-            saveUserHistory($session_id, $id, $amount);
-            if (addToUserBankAccount($id, $amount) != 1) {
-                setUserHistoryComplition($session_id, $id, 1);
-            }
+            addToUserBankEntry($id, $amount, 'game');
+            saveUserHistory($session_id, $id, $conn->insert_id);
         }
 
     } catch (Exception $e) {
@@ -390,4 +400,4 @@ function sessionStart($session_id)
 }
 
 
-// createSession("2", "3","50/50");
+// createSession("2", "3","rip_money");
