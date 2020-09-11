@@ -1,0 +1,18 @@
+.join-form {
+  flex: 1;
+  text-align: center;
+  padding: 30px;
+}
+.join-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 20% 20px 20%
+}
+.game-desc {
+  flex: 1;
+}
+.game-info {
+  text-align: center;
+  padding: 30px;
+}

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru">
 <?php
-include "../php/db.php";
-checkAuth("./userLogin.php");
+    include "../php/db.php";
+    checkAuth("./userLogin.php");
 
 ?>
 <head>

@@ -13,7 +13,7 @@ if ($conn->connect_error) {
 }
 
 //Получение данных с проверкой на их существовние
-function getData($key, $mandatory)
+function getData($key, $mandatory = false)
 {
     if ($mandatory) {
         if (key_exists($key, $_REQUEST)) {
@@ -175,7 +175,7 @@ function checkAuth($authPage)
 
 function getGameID($gamename)
 {
-    return arrayFromRes(getFromTable('game', 'game_name', $gamename))['game_id'];
+    return arrayFromRes(getFromTable('game', 'game_slug', $gamename))['game_id'];
 }
 
 function getStateID($statename)
@@ -183,12 +183,12 @@ function getStateID($statename)
     return arrayFromRes(getFromTable('session_state', 'state_name', $statename))['state_id'];
 }
 
-//Вернуть все сессии
 function getSessionInfo($session_id)
 {
     return arrayFromRes(getFromTable('session', 'session_id', $session_id));
 }
 
+//Вернуть все сессии
 function getSessions()
 {
     return getMultipleRowsArr(doQuerry('SELECT * FROM session'));
@@ -213,9 +213,9 @@ function maxPlayers($session_id)
 }
 
 //Создать игру
-function createSession($session_name, $session_info, $game_name)
+function createSession($session_name, $session_info, $game_slug)
 {
-    return doQuerry('INSERT INTO session VALUES(session_id,' . getGameID($game_name) . ',' . getStateID('open') . ',' . arrToString(array($session_name, $session_info)) . ')');
+    return doQuerry('INSERT INTO session VALUES(session_id,' . getGameID($game_slug) . ',' . getStateID('open') . ',' . arrToString(array($session_name, $session_info)) . ')');
 }
 
 function checkSessionForState($session_id, $state)
@@ -284,9 +284,9 @@ function validateSession()
 }
 
 //получаем класс игры
-function getGameClass($game_name)
+function getGameClass($game_slug)
 {
-    switch ($game_name) {
+    switch ($game_slug) {
         case "50/50":
             return new random();
         case "rip_money":
@@ -379,7 +379,7 @@ function sessionStart($session_id)
         $gameInfo = getGameInfo($sessionInfo['game_id']);
         $userData = getSessionUsers($session_id);
 
-        $class = getGameClass($gameInfo['game_name']);
+        $class = getGameClass($gameInfo['game_slug']);
         $gameResults = $class->run($userData);
 
         print_r($gameResults);
@@ -399,5 +399,7 @@ function sessionStart($session_id)
     return;
 }
 
-
+function consolelog($data) {
+    echo '<script>console.log(' . $data .')</script>';
+}
 // createSession("2", "3","rip_money");

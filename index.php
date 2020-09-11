@@ -23,10 +23,10 @@ include "./php/index_tpl.php";
                 <button>Записанные игры</button>
                 <button>Завершенные игры</button>
             </nav>
-            <form class="sessions__list" action="./php/joingame.php" method="POST">
+            <form class="sessions__list" action="./pages/joinGame.php" method="POST">
             <?php 
             $sessions = getSessions();
-            
+            consolelog(json_encode($sessions));
             for ($i = 0; $i < count($sessions); $i++) {
                 setCardTPL( $sessions[$i]['name'], $sessions[$i]['info'], "0", "0", $sessions[$i]['session_id']);
             }

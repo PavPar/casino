@@ -6,7 +6,7 @@
 .profile {
     display: flex;
     flex-direction: column;
-    max-width: calc(25% - 25px);
+    max-width: calc(25vw - 25px);
     min-height: 150px;
     border-top: 1px black solid;
     border-bottom: 1px black solid;
