@@ -34,8 +34,8 @@
         <form class="form join-form" name="formReg">
             <h2><?php echo 'Введите сумму от ' .$game['min_bet']. ' до ' .$game['max_bet'];  ?></h2>
             <br>
-            <input class="form__input" placeholder="Ставка" name="bet" type="number" id="quantity" min=<?php echo $game['min_bet'];?> max=<?php echo $game['max_bet'];?> required>
-            <button class="button button_type-submit" type="submit">Присоединиться</button>
+            <input class="form__input" value=<?php echo $game['min_bet'];?> name="bet" type="number" id="quantity" min=<?php echo $game['min_bet'];?> max=<?php echo $game['max_bet'];?> required>
+            <button class="make_bet" type="submit">Присоединиться</button>
             <input hidden name="session" value=<?php echo $session['session_id'];?> ></input>
         </form>
         <div class='game-desc'>

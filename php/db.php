@@ -178,11 +178,6 @@ function getGameID($gamename)
     return arrayFromRes(getFromTable('game', 'game_slug', $gamename))['game_id'];
 }
 
-function getStateID($statename)
-{
-    return arrayFromRes(getFromTable('session_state', 'state_name', $statename))['state_id'];
-}
-
 function getSessionInfo($session_id)
 {
     return arrayFromRes(getFromTable('session', 'session_id', $session_id));
@@ -191,7 +186,7 @@ function getSessionInfo($session_id)
 //Вернуть все сессии
 function getSessions()
 {
-    return getMultipleRowsArr(doQuerry('SELECT * FROM session'));
+    return getMultipleRowsArr(doQuerry('SELECT * FROM session order by LENGTH(state) '));
 }
 
 function getGameInfo($game_id)
@@ -215,7 +210,7 @@ function maxPlayers($session_id)
 //Создать игру
 function createSession($session_name, $session_info, $game_slug)
 {
-    return doQuerry('INSERT INTO session VALUES(session_id,' . getGameID($game_slug) . ',' . getStateID('open') . ',' . arrToString(array($session_name, $session_info)) . ')');
+    return doQuerry('INSERT INTO session VALUES(session_id,' . getGameID($game_slug) . ',' . 'open' . ',' . arrToString(array($session_name, $session_info)) . ')');
 }
 
 function checkSessionForState($session_id, $state)
@@ -228,7 +223,7 @@ function checkSessionForState($session_id, $state)
         return $validity;
     }
 
-    if ($sessionInfo['state_id'] != getStateID($state)) {
+    if ($sessionInfo['state'] != $state) {
         $validity = false;
         return $validity;
     }
@@ -373,7 +368,7 @@ function sessionStart($session_id)
         return false;
     }
     try {
-        setSessionState($session_id, getStateID('closed'));
+        setSessionState($session_id, 'closed');
 
         $sessionInfo = getSessionInfo($session_id);
         $gameInfo = getGameInfo($sessionInfo['game_id']);
@@ -384,7 +379,7 @@ function sessionStart($session_id)
 
         print_r($gameResults);
 
-        setSessionState($session_id, getStateID('finished'));
+        setSessionState($session_id, 'finished');
 
         foreach ($gameResults as $id => $amount) {
             addToUserBankEntry($id, $amount, 'game');
@@ -392,7 +387,7 @@ function sessionStart($session_id)
         }
 
     } catch (Exception $e) {
-        setSessionState($session_id, getStateID('failed'));
+        setSessionState($session_id, 'canceled');
         echo logData('Caught exception: ', $e->getMessage(), "\n", 'session-log.txt');
     }
 

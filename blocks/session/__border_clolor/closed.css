@@ -1,0 +1,7 @@
+.session-closed{
+  border: 2px red solid;
+}
+
+.join-closed {
+  display: none
+}
