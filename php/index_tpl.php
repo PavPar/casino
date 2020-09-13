@@ -1,7 +1,7 @@
 <?php
 include "db.php";
-
-require getcwd() . '\php\template.php';
+require __DIR__ . '\template.php';
+$dir = __DIR__ .'\..\templates\index\\';
 
 function getTpl()
 {
@@ -23,24 +23,34 @@ function getTpl()
     echo $parse->template;
 }
 
-function setCardTPL($name, $info, $currplayers, $maxplayers, $session_id)
+function setCardTPL($name, $info, $currplayers, $maxplayers, $session_id, $state)
 {
+    global $dir;
     $parse = new parse_class;
+    $pcount = countPlayers($session_id);
+    $maxcount = maxPlayers($session_id);
 
-    if (isUserLogged()) {
-        $parse->get_tpl(getcwd() . '\templates\index\session.tpl');
-        $parse->set_tpl('{NAME}', $name);
-        $parse->set_tpl('{INFO}', $info);
-        $parse->set_tpl('{CURRPLAYERS}', countPlayers($session_id));
-        $parse->set_tpl('{MAXPLAYERS}', maxPlayers($session_id));
-        $parse->set_tpl('{SESSION_ID}', $session_id);
-    } else {
-        $parse->get_tpl(getcwd() . '\templates\index\session-hollow.tpl');
-        $parse->set_tpl('{NAME}', $name);
-        $parse->set_tpl('{INFO}', $info);
-        $parse->set_tpl('{CURRPLAYERS}', countPlayers($session_id));
-        $parse->set_tpl('{MAXPLAYERS}', maxPlayers($session_id));
-    }
+    $parse->get_tpl($dir . 'session.tpl');
+    $parse->set_tpl('{NAME}', $name);
+    $parse->set_tpl('{INFO}', $info);
+    $parse->set_tpl('{CURRPLAYERS}', $pcount);
+    $parse->set_tpl('{MAXPLAYERS}', $maxcount);
+    $parse->set_tpl('{SESSION_ID}', $session_id);
+    $parse->set_tpl('{STATE}', $state);
+    $parse->set_tpl('{HIDDEN}', isUserLogged() && ($pcount != $maxcount) ? '' : 'hidden');
+    $parse->tpl_parse();
+    echo $parse->template;
+}
+
+function setGameDescTPL($name, $info, $game_name, $rules) 
+{
+    global $dir;
+    $parse = new parse_class;
+    $parse->get_tpl($dir . 'game-desc.tpl');
+    $parse->set_tpl('{NAME}', $name);
+    $parse->set_tpl('{INFO}', $info);
+    $parse->set_tpl('{GAME_NAME}',  $game_name);
+    $parse->set_tpl('{RULES}', $rules);
     $parse->tpl_parse();
     echo $parse->template;
 }

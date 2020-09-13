@@ -11,7 +11,7 @@ $userData = array(
 );
 
 if (saveUserData($userData)) {
-    echo ("We did it");
+    header("Location: ../index.php");
 } else {
     echo ("Something went wrong");
 }

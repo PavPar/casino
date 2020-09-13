@@ -1,0 +1,7 @@
+
+.chart_container {
+  float: right;
+  width: calc(75% - 25px);
+  margin: auto;
+  margin-top: 10vh;
+}
