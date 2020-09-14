@@ -1,0 +1,5 @@
+.bottom-border-margin {
+  margin-bottom: 10px;
+  border-bottom: 1px solid black;
+  margin-top: 10px;
+}

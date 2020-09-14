@@ -1,6 +1,5 @@
 <?php 
 include "./php/index_tpl.php";
-
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -15,21 +14,25 @@ include "./php/index_tpl.php";
 
 <body class="page">
     <header class="header">
-        <h1 class="header__title">Добро пожаловать в наше казино!</h1>
+        <h1 class="header__title">Добро пожаловать в казино!</h1>
     </header>
     <main class="content">
     <section class="sessions">
             <nav class="sessions__navbar">
-                <button>Записаться на игру</button>
-                <button>Записанные игры</button>
-                <button>Завершенные игры</button>
+                <?php
+                if (isUserLogged()) echo '<form action="./pages/createGame.php" method="POST">
+                    <button class="good_button">Создать игру</button>
+                </form>'
+                ?>
+                <!-- <button>Записанные игры</button>
+                <button>Завершенные игры</button> -->
             </nav>
-            <form class="sessions__list" action="./php/joingame.php" method="POST">
+            <form class="sessions__list" action="./pages/joinGame.php" method="POST">
             <?php 
             $sessions = getSessions();
-            
+            consolelog(json_encode($sessions));
             for ($i = 0; $i < count($sessions); $i++) {
-                setCardTPL( $sessions[$i]['name'], $sessions[$i]['info'], "0", "0", $sessions[$i]['session_id']);
+                setCardTPL( $sessions[$i]['name'], $sessions[$i]['info'], "0", "0", $sessions[$i]['session_id'], $sessions[$i]['state']);
             }
             
                  

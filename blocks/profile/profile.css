@@ -1,12 +1,12 @@
 @import url(./__avatar/profile__avatar.css);
 @import url(./__subtitle/profile__subtitle.css);
 @import url(./__title/profile__title.css);
-@import url(./_position/profile_position-center.css);
+@import url(./_position/profile_position-left.css);
 
 .profile {
     display: flex;
     flex-direction: column;
-    max-width: 520px;
+    max-width: calc(25vw - 25px);
     min-height: 150px;
     border-top: 1px black solid;
     border-bottom: 1px black solid;

@@ -1,0 +1,6 @@
+.session-canceled{
+  border: 2px yellow solid;
+}
+.join-canceled {
+  display: none
+}

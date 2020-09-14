@@ -1,5 +1,5 @@
 <?php
-include "gameInterface.php";
+include __DIR__ . "/gameInterface.php";
 
 /*
 
@@ -10,7 +10,7 @@ $userData
 user_id - bet
 
  */
-class random implements game
+class russian implements game
 {
     //Точка входа в игру
     public function run($userData)
@@ -26,7 +26,7 @@ class random implements game
     //Логика игры
     private function gamelogic($players)
     {
-        $winnerID = $players[rand(0, 1)];
+        $winnerID = $players[rand(0, count($players) - 1)];
         return $winnerID;
     }
 
@@ -36,10 +36,13 @@ class random implements game
         $losersData = $playersData;
         unset($losersData[$winnerID]);
 
-        $loserID = array_keys($losersData)[0];
-
-        $playersData[$winnerID] = $playersData[$loserID];
-        $playersData[$loserID] = -$playersData[$loserID];
+        $losers = array_keys($losersData);
+        $sum = 0
+        foreach ($losers as $loser) {
+          $playersData[$loser] = -$playersData[$loser]; 
+          $sum += $playersData[$loser]
+        }
+        $playersData[$winnerID] = $sum;
 
         return $playersData;
     }

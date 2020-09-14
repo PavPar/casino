@@ -1,0 +1,89 @@
+.join-form {
+  flex: 1;
+  text-align: center;
+  padding: 30px;
+}
+.join-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 10% 10px 10%
+}
+.game-desc {
+  flex: 2;
+}
+.game-info {
+  text-align: center;
+  padding: 10px;
+  flex: 2;
+}
+.timer {
+  font-size: 100px;
+  text-align: center;
+}
+.make_bet {
+  display:inline-block;
+  padding:0.7em 1.4em;
+  margin:0 0.3em 0.3em 0;
+  border-radius:0.15em;
+  box-sizing: border-box;
+  text-decoration:none;
+  font-family:'Roboto',sans-serif;
+  text-transform:uppercase;
+  font-weight:400;
+  color:#FFFFFF;
+  background-color:#3369ff;
+  box-shadow:inset 0 -0.6em 0 -0.35em rgba(0,0,0,0.17);
+  text-align:center;
+  position:relative;
+}
+.make_bet:active{
+  top:0.1em;
+}
+.game-name {
+  border-top: 2px solid black
+}
+/* List */
+ul {
+  counter-reset: index;  
+  padding: 0;
+  margin: 0;
+  text-align: center;
+}
+
+/* List element */
+li {
+  counter-increment: index; 
+  margin: 0px 0px 0px  25%;
+  display: flex;
+  align-items: center;
+  padding: 12px 0px;
+  box-sizing: border-box;
+}
+
+
+/* Element counter */
+li::before {
+  content: counters(index, ".", decimal-leading-zero);
+  font-size: 1.5rem;
+  text-align: right;
+  font-weight: bold;
+  min-width: 50px;
+  padding-right: 12px;
+  font-variant-numeric: tabular-nums;
+  align-self: flex-start;
+  background-image: linear-gradient(to bottom, aquamarine, orangered);
+  background-attachment: fixed;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* Element separation */
+li + li {
+  border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+
+
+

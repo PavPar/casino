@@ -1,0 +1,6 @@
+.session-finished{
+  border: 2px grey solid;
+}
+.join-finished {
+  display: none
+}

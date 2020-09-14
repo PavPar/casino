@@ -1,0 +1,28 @@
+@import url(../vendor/normalize.css);
+
+
+@import url(../blocks/button/button.css);
+@import url(../blocks/content/content.css);
+@import url(../blocks/form/form.css);
+@import url(../blocks/header/header.css);
+@import url(../blocks/navbar/navbar.css);
+@import url(../blocks/page/page.css);
+@import url(../blocks/join/join.css);
+@import url(../blocks/shared/pic500.css);
+@import url(../blocks/form/position/float-left.css);
+
+input {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+  border: none;
+  background-color: #3369ff;
+  color: white;
+}
+::placeholder { /* Most modern browsers support this now. */
+  color:    #aaa;
+}
+.user-list {
+  text-align: center;
+}

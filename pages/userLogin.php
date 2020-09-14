@@ -18,7 +18,9 @@ if(array_key_exists('user', $_SESSION)){
 
 <body class="page">
     <header>
-        <button class="button button_type-home">На главную</button>
+    <form class="form" method="POST">
+      <button class="button button_type-home" formaction="../index.php">На главную страницу</button>
+    </form>
     </header>
     <main class="auth">
         <nav class="navbar navbar_position-top">
