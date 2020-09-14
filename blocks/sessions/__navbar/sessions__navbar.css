@@ -1,5 +1,4 @@
 .sessions__navbar{
-    grid-area: "nav";
     border-bottom: 1px solid black;
     grid-row:1;
 }

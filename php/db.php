@@ -188,10 +188,17 @@ function getSessions()
 {
     return getMultipleRowsArr(doQuerry('SELECT * FROM session order by LENGTH(state) '));
 }
+function getSessionsByTime($from, $to) {
+    return getMultipleRowsArr(doQuerry('SELECT * FROM session where starts_at BETWEEN '.$from.' AND '.$to));
+}
 
 function getGameInfo($game_id)
 {
     return arrayFromRes(getFromTable('game', 'game_id', $game_id));
+}
+
+function getSessionPlayers($session_id) {
+    return getArrayRows(doQuerry('SELECT * FROM user_session JOIN user ON user_session.session_id = ' . $session_id . '  AND user.id=user_session.user_id'));
 }
 
 function countPlayers($session_id)
@@ -208,9 +215,9 @@ function maxPlayers($session_id)
 }
 
 //Создать игру
-function createSession($session_name, $session_info, $game_slug)
+function createSession($session_name, $session_info, $game_slug, $time)
 {
-    return doQuerry('INSERT INTO session VALUES(session_id,' . getGameID($game_slug) . ',' . 'open' . ',' . arrToString(array($session_name, $session_info)) . ')');
+    return doQuerry('INSERT INTO session VALUES(session_id,' . getGameID($game_slug) . ',' . "'open'" . ',' . arrToString(array($session_name, $session_info)) .', '. $time .')');
 }
 
 function checkSessionForState($session_id, $state)
@@ -234,6 +241,10 @@ function checkSessionForState($session_id, $state)
 function isUserInSession($user_id, $session_id)
 {
     return checkForRows(doQuerry('SELECT * FROM user_session WHERE user_id = ' . $user_id . ' AND session_id = ' . $session_id));
+}
+function getGames()
+{
+    return getArrayRows(doQuerry('SELECT * FROM game'));
 }
 
 function joinSession($user_id, $session_id, $bet)
@@ -272,20 +283,21 @@ function joinSession($user_id, $session_id, $bet)
     }
 }
 
-function validateSession()
+function validateSession($session, $game, $count)
 {
-    //TODO: later....
-    return true;
+    return $session['state'] === 'open' && $count >= $game['mix_users'];
 }
 
 //получаем класс игры
 function getGameClass($game_slug)
 {
     switch ($game_slug) {
-        case "50/50":
+        case "one-on-one":
             return new random();
-        case "rip_money":
+        case "solo":
             return new solo();
+        case "russian":
+            return new russian();
     }
 }
 
@@ -296,9 +308,9 @@ function logData($msg, $filepath)
 }
 
 //Установить определенное состояние сесии
-function setSessionState($session_id, $state_id)
+function setSessionState($session_id, $state)
 {
-    return doQuerry('UPDATE session SET state_id = ' . $state_id . ' WHERE session_id = ' . $session_id);
+    return doQuerry("UPDATE session SET state = '" . $state . "' WHERE session_id = " . $session_id);
 }
 
 //Установить выполнено ли пополнение
@@ -329,11 +341,15 @@ function getValueFromRes($res)
 }
 function getJsonFromRes($res)
 {
+    return json_encode(getArrayRows($res));
+}
+function getArrayRows($res)
+{
     $rows = array();
     while($row = $res->fetch_assoc()) {
         $rows[] = $row;
     }
-    return json_encode($rows);
+    return $rows;
 }
 
 //Получить деньги пользователя
@@ -360,20 +376,19 @@ function getSessionUsers($session_id)
     return $res;
 };
 
-function sessionStart($session_id)
+function sessionStart($session)
 {
     global $conn;
-    include getcwd() . "/php/games/solo.php";
-    if (!validateSession($session_id)) {
-        return false;
-    }
+    $session_id = $session['session_id'];
+    $gameInfo = getGameInfo($session['game_id']);
+    consolelog('"'.__DIR__.'"');
+    include __DIR__ . "/games/".$gameInfo['game_slug'].".php";
     try {
         setSessionState($session_id, 'closed');
-
-        $sessionInfo = getSessionInfo($session_id);
-        $gameInfo = getGameInfo($sessionInfo['game_id']);
         $userData = getSessionUsers($session_id);
 
+        if (!validateSession($session, $gameInfo, count($userData))) { return; } 
+        
         $class = getGameClass($gameInfo['game_slug']);
         $gameResults = $class->run($userData);
 

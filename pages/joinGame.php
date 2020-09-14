@@ -31,7 +31,7 @@
     </form>
     </header>
     <div class="join-container">
-        <form class="form join-form" name="formReg">
+        <form class="form join-form form-flex" name="formReg">
             <h2><?php echo 'Введите сумму от ' .$game['min_bet']. ' до ' .$game['max_bet'];  ?></h2>
             <br>
             <input class="form__input" value=<?php echo $game['min_bet'];?> name="bet" type="number" id="quantity" min=<?php echo $game['min_bet'];?> max=<?php echo $game['max_bet'];?> required>
@@ -40,7 +40,7 @@
         </form>
         <div class='game-desc'>
         <?php 
-            setGameDescTPL($session['name'], $session['info'], $game['game_name'], $game['rules']);  
+            setGameDescTPL($session['name'], $session['info'], $game['game_name'], $game['rules'], $game['game_slug']);  
             ?>
         </div> 
     </div>

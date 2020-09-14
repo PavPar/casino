@@ -42,7 +42,7 @@ function setCardTPL($name, $info, $currplayers, $maxplayers, $session_id, $state
     echo $parse->template;
 }
 
-function setGameDescTPL($name, $info, $game_name, $rules) 
+function setGameDescTPL($name, $info, $game_name, $rules, $slug) 
 {
     global $dir;
     $parse = new parse_class;
@@ -51,6 +51,7 @@ function setGameDescTPL($name, $info, $game_name, $rules)
     $parse->set_tpl('{INFO}', $info);
     $parse->set_tpl('{GAME_NAME}',  $game_name);
     $parse->set_tpl('{RULES}', $rules);
+    $parse->set_tpl('{SLUG}', $slug);
     $parse->tpl_parse();
     echo $parse->template;
 }

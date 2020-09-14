@@ -19,8 +19,12 @@ include "./php/index_tpl.php";
     <main class="content">
     <section class="sessions">
             <nav class="sessions__navbar">
-                <!-- <button>Записаться на игру</button>
-                <button>Записанные игры</button>
+                <?php
+                if (isUserLogged()) echo '<form action="./pages/createGame.php" method="POST">
+                    <button class="good_button">Создать игру</button>
+                </form>'
+                ?>
+                <!-- <button>Записанные игры</button>
                 <button>Завершенные игры</button> -->
             </nav>
             <form class="sessions__list" action="./pages/joinGame.php" method="POST">

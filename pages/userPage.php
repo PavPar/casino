@@ -24,8 +24,8 @@
             <p class="profile__subtitle">ФИО : <?php echo ($_SESSION["user"]["firstname"] . " " . $_SESSION["user"]["lastname"] . " " . $_SESSION["user"]["middlename"]) ?></p>
             <p class="profile__subtitle">Ваш балланс: <?php echo (getUserMoney($_SESSION["user"]["id"]))?></p>
 
-            <form class="form" action="userAuth.html" method="POST">
-                <button class="button button_type-money" type="submit">Пополнить балланс</button>
+            <form class="form">
+                <button class="button button_type-money" formaction="../php/addMoney.php">Пополнить балланс</button>
                 <button class="button button_type-home" formaction="../index.php">На главную страницу</button>
             </form>
         </section>
