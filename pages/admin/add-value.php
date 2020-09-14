@@ -22,7 +22,6 @@
 
             <?php echo(getValTPL(getData('table_name', true)))?>
 
-            <button class="button button_type-home" value="">ADD</button>
         </section>
         <nav class="navbar navbar_position-right">
             <section class="profile">

@@ -193,8 +193,9 @@ function getSessions()
 {
     return getMultipleRowsArr(doQuerry('SELECT * FROM session order by LENGTH(state) '));
 }
-function getSessionsByTime($from, $to) {
-    return getMultipleRowsArr(doQuerry('SELECT * FROM session where starts_at BETWEEN '.$from.' AND '.$to));
+function getSessionsByTime($from, $to)
+{
+    return getMultipleRowsArr(doQuerry('SELECT * FROM session where starts_at BETWEEN ' . $from . ' AND ' . $to));
 }
 
 function getGameInfo($game_id)
@@ -202,7 +203,8 @@ function getGameInfo($game_id)
     return arrayFromRes(getFromTable('game', 'game_id', $game_id));
 }
 
-function getSessionPlayers($session_id) {
+function getSessionPlayers($session_id)
+{
     return getArrayRows(doQuerry('SELECT * FROM user_session JOIN user ON user_session.session_id = ' . $session_id . '  AND user.id=user_session.user_id'));
 }
 
@@ -219,10 +221,17 @@ function maxPlayers($session_id)
     return $gameInfo['max_users'];
 }
 
+function getGameSlug($game_id)
+{
+    return arrayFromRes(getFromTable('game', 'game_id', $game_id))['game_slug'];
+}
+
 //Создать игру
 function createSession($session_name, $session_info, $game_slug, $time)
 {
-    return doQuerry('INSERT INTO session VALUES(session_id,' . getGameID($game_slug) . ',' . "'open'" . ',' . arrToString(array($session_name, $session_info)) .', '. $time .')');
+    // echo(getGameID($game_slug));
+    // print_r('INSERT INTO session VALUES(session_id,' . getGameID($game_slug) . ',' . arrToString(array('open', $session_name, $session_info)) . ', ' . $time . ')');
+    return doQuerry('INSERT INTO session VALUES(session_id,' . getGameID($game_slug) . ',' . "'open'" . ',' . arrToString(array($session_name, $session_info)) . ', ' . $time . ')');
 }
 
 function checkSessionForState($session_id, $state)
@@ -351,7 +360,7 @@ function getJsonFromRes($res)
 function getArrayRows($res)
 {
     $rows = array();
-    while($row = $res->fetch_assoc()) {
+    while ($row = $res->fetch_assoc()) {
         $rows[] = $row;
     }
     return $rows;
@@ -362,7 +371,7 @@ function getUserMoney($user_id)
 {
     return getValueFromRes(doQuerry('SELECT sum(amount) FROM user_bank_history WHERE user_id = ' . $user_id));
 }
-function getUserMoneyAgg($user_id) 
+function getUserMoneyAgg($user_id)
 {
     return getJsonFromRes(doQuerry(' SELECT amount, @total := @total + amount as total
     FROM user_bank_history, (SELECT @total := 0) as dummy WHERE user_id = ' . $user_id . '
@@ -386,14 +395,14 @@ function sessionStart($session)
     global $conn;
     $session_id = $session['session_id'];
     $gameInfo = getGameInfo($session['game_id']);
-    consolelog('"'.__DIR__.'"');
-    include __DIR__ . "/games/".$gameInfo['game_slug'].".php";
+    consolelog('"' . __DIR__ . '"');
+    include __DIR__ . "/games/" . $gameInfo['game_slug'] . ".php";
     try {
         setSessionState($session_id, 'closed');
         $userData = getSessionUsers($session_id);
 
-        if (!validateSession($session, $gameInfo, count($userData))) { return; } 
-        
+        if (!validateSession($session, $gameInfo, count($userData))) {return;}
+
         $class = getGameClass($gameInfo['game_slug']);
         $gameResults = $class->run($userData);
 
@@ -416,12 +425,13 @@ function sessionStart($session)
 
 function deleteValueFromTable($table_name, $key, $value)
 {
-    doQuerry('DELETE FROM ' . $table_name . ' WHERE ' . $key . ' = ' . $value);
+    return doQuerry('DELETE FROM ' . $table_name . ' WHERE ' . $key . ' = ' . $value);
 }
 
 // createSession("test", "final test_2","50/50");
 // setSessionState(4, getStateID('open'));
-function consolelog($data) {
-    echo '<script>console.log(' . $data .')</script>';
+function consolelog($data)
+{
+    echo '<script>console.log(' . $data . ')</script>';
 }
 // createSession("2", "3","rip_money");
