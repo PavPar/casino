@@ -299,7 +299,7 @@ function joinSession($user_id, $session_id, $bet)
 
 function validateSession($session, $game, $count)
 {
-    return $session['state'] === 'open' && $count >= $game['mix_users'];
+    return $session['state'] === 'open' && $count >= $game['min_users'];
 }
 
 //получаем класс игры
