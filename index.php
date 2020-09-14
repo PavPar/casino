@@ -1,6 +1,6 @@
 <?php 
 include "./php/index_tpl.php";
-sessionStart(3);
+
 ?>
 <!DOCTYPE html>
 <html lang="ru">

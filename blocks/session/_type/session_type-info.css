@@ -1,0 +1,9 @@
+.session_type-info {
+    display: grid;
+    grid-template-columns: repeat(5,1fr);
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+    justify-content: space-between;
+    position: relative;
+    padding: 0 50px 0 10px;
+}

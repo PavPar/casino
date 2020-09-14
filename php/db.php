@@ -70,6 +70,11 @@ function arrayFromRes($result)
     return $result->fetch_assoc();
 }
 
+function getAllFromTable($table)
+{
+    return doQuerry('SELECT * FROM ' . $table);
+}
+
 function getFromTable($table, $field, $value)
 {
     return doQuerry('SELECT * FROM ' . $table . ' WHERE ' . $field . ' = "' . $value . '"');
@@ -87,7 +92,8 @@ function getMultipleRowsArr($result)
 
 function getUserRole($user_id)
 {
-    return getValueFromRes(getFromTable('user', 'id', $user_id));
+    $userData = arrayFromRes(getFromTable('user', 'id', $user_id));
+    return $userData['role_id'];
 }
 
 //Получить все данные пользователя
@@ -158,7 +164,6 @@ function isUserAdmin($user_id)
     $user_roleID = getUserRole($user_id);
     $role_id = getUserRoleID('admin');
 
-
     if ($role_id == $user_roleID) {
         return true;
     }
@@ -213,9 +218,9 @@ function maxPlayers($session_id)
 }
 
 //Создать игру
-function createSession($session_name, $session_info, $game_name)
+function createSession($session_name, $session_info, $game_id)
 {
-    return doQuerry('INSERT INTO session VALUES(session_id,' . getGameID($game_name) . ',' . getStateID('open') . ',' . arrToString(array($session_name, $session_info)) . ')');
+    return doQuerry('INSERT INTO session VALUES(session_id,' . $game_id . ',' . getStateID('open') . ',' . arrToString(array($session_name, $session_info)) . ')');
 }
 
 function checkSessionForState($session_id, $state)
@@ -269,7 +274,7 @@ function joinSession($user_id, $session_id, $bet)
     }
 
     if ($flagJOIN) {
-        return doQuerry('INSERT INTO user_session VALUES(' . $user_id . ',' . $session_id . ',' . $bet . ')');
+        doQuerry('INSERT INTO user_session VALUES(' . $user_id . ',' . $session_id . ',' . $bet . ')');
     }
 
     if (countPlayers($session_id) == $gameInfo['max_users']) {
@@ -356,7 +361,7 @@ function getSessionUsers($session_id)
 
 function sessionStart($session_id)
 {
-    include getcwd() . "/php/games/random.php";
+    include "./games/random.php";
     if (!validateSession($session_id)) {
         return false;
     }
@@ -383,11 +388,16 @@ function sessionStart($session_id)
 
     } catch (Exception $e) {
         setSessionState($session_id, getStateID('failed'));
-        echo logData('Caught exception: ', $e->getMessage(), "\n", 'session-log.txt');
+        echo logData('Caught exception: ', $e->getMessage(), "\n", './session-log.txt');
     }
 
-    return;
+    return true;
 }
 
+function deleteValueFromTable($table_name, $key, $value)
+{
+    doQuerry('DELETE FROM ' . $table_name . ' WHERE ' . $key . ' = ' . $value);
+}
 
-// createSession("2", "3","50/50");
+// createSession("test", "final test_2","50/50");
+// setSessionState(4, getStateID('open'));

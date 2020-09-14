@@ -8,7 +8,7 @@ function getTpl()
     $parse = new parse_class;
 
     if (isUserLogged()) {
-        if(isUserAdmin($_SESSION["user"]['id'])){
+        if(!isUserAdmin($_SESSION["user"]['id'])){
             $parse->get_tpl(getcwd() . '\templates\index\index-user.tpl');
             $parse->set_tpl('{LOGIN}', $_SESSION["user"]["username"]);
         }else{

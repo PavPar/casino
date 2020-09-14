@@ -7,5 +7,6 @@
 .session{
     display: grid;
     grid-template-columns: 25% 50% 10% 15%;
-    border: 1px red solid;
+    border: 2px black solid;
+    padding: 0  0  0 10px;
 }

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="table_namet" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Онлайн Казино</title>
     <link rel="stylesheet" type="text/css" href="../../styles/index.css">
@@ -21,47 +21,25 @@
                 <button>Завершенные игры</button>
             </nav>
 
-            <form class="sessions__list" action="./php/joingame.php" method="POST">
+            <form class="sessions__list" action="./admin-info.php" method="POST">
                 <div class="session session_type-option">
                     <p class="session__name">Пользователи</p>
-                    <button name="session" class="session__button session__button_type-join" value="{SESSION_ID}"
+                    <button name="table_name" class="session__button session__button_type-join" value="user"
                         style="grid-column: -2">Посмотреть</button>
 
                 </div>
 
                 <div class="session session_type-option">
                     <p class="session__name">Сессии</p>
-                    <button name="session" class="session__button session__button_type-join" value="{SESSION_ID}"
+                    <button name="table_name" class="session__button session__button_type-join" value="session"
                         style="grid-column: -2">Посмотреть</button>
 
                 </div>
 
                 <div class="session session_type-option">
                     <p class="session__name">Роли</p>
-                    <button name="session" class="session__button session__button_type-join" value="{SESSION_ID}"
+                    <button name="table_name" class="session__button session__button_type-join" value="role"
                         style="grid-column: -2">Посмотреть</button>
-
-                </div>
-
-                <div class="session session_type-option">
-                    <p class="session__name">Источники пополнения</p>
-                    <button name="session" class="session__button session__button_type-join" value="{SESSION_ID}"
-                        style="grid-column: -2">Посмотреть</button>
-
-
-                </div>
-                <div class="session session_type-option">
-                    <p class="session__name">История игр пользователя</p>
-                    <button name="session" class="session__button session__button_type-join" value="{SESSION_ID}"
-                        style="grid-column: -2">Посмотреть</button>
-
-
-                </div>
-                <div class="session session_type-option">
-                    <p class="session__name">История пополнений пользователя</p>
-                    <button name="session" class="session__button session__button_type-join" value="{SESSION_ID}"
-                        style="grid-column: -2">Посмотреть</button>
-
 
                 </div>
 
@@ -74,6 +52,7 @@
 
                 <form class="form" action="userAuth.html" method="POST">
                     <button class="button button_type-home" formaction="../userPage.php">Ваша страница</button>
+                    <button class="button button_type-home" formaction="../../index.php">На главную</button>
                     <button class="button button_type-logout" formaction="../logout.php">Выйти из системы</button>
                 </form>
 
@@ -86,3 +65,13 @@
 </body>
 
 </html>
+
+
+
+<div class="session session_type-info">
+    {DATA}
+
+    <button name="field" value="{KEY}" class="button button_type-delete"></button>
+    <input style="display:none;" name="table_name" value="{TABLE}">
+    <input style="display:none;" name="field_name" value="{FIELD}">
+</div>

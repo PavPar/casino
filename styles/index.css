@@ -3,6 +3,7 @@
 @import url(../blocks/button/button.css);
 @import url(../blocks/button/_type/button_type-login.css);
 @import url(../blocks/button/_type/button_type-register.css);
+@import url(../blocks/button/_type/button_type-delete.css);
 
 @import url(../blocks/content/content.css);
 @import url(../blocks/form/form.css);
@@ -18,7 +19,9 @@
 @import url(../blocks/sessions/sessions.css);
 @import url(../blocks/session/session.css);
 @import url(../blocks/session/_type/session_type-option.css);
+@import url(../blocks/session/_type/session_type-info.css);
 
+@import url(../blocks/form/form.css);
 .header {}
 
 .header__title {}

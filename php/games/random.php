@@ -1,5 +1,5 @@
 <?php
-include getcwd() . "/php/games/gameInterface.php";
+include "gameInterface.php";
 
 /*
 

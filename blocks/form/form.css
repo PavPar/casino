@@ -1,4 +1,5 @@
 @import url(./__input/form__input.css);
+@import url(./_type/form_type-admin.css);
 
 .form {
     display: flex;
