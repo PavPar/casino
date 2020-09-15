@@ -35,7 +35,7 @@
         
         <?php echo '<script>const sqlData ='.(getUserMoneyAgg($_SESSION["user"]["id"])).'</script>'?>
         <script>
-            const data = Object.values(sqlData).map(_ => _.total)
+            const data = Object.values(sqlData).map(_ => _.total).slice(-10)
             const ctx = document.getElementById('chart').getContext('2d');
             const myChart = new Chart(ctx, {
                 type: 'line',

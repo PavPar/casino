@@ -5,14 +5,10 @@
 @import url(./__players/session__players.css);
 
 
+@import url(./__border_clolor/default.css);
 @import url(./__border_clolor/canceled.css);
 @import url(./__border_clolor/open.css);
 @import url(./__border_clolor/closed.css);
 @import url(./__border_clolor/finished.css);
 
-.session{
-    display: grid;
-    grid-template-columns: 25% 50% 10% 15%;
-    border: 2px black solid;
-    padding: 0  0  0 10px;
-}
+

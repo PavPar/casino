@@ -348,6 +348,10 @@ function addToUserBankEntry($user_id, $amount, $source)
 {
     return doQuerry('INSERT INTO user_bank_history VALUES (id,' . $user_id . ',' . $amount . ', "' . $source . '")');
 }
+function getSessionResult($user_id, $session_id) {
+    return getArrayRows(doQuerry('SELECT * FROM user_session_history JOIN user_bank_history ON user_session_history.session_id = ' . $session_id . '
+    AND user_session_history.user_id = ' . $user_id . '  AND user_bank_history.id=user_session_history.user_bank_history_id'));
+}
 
 function getValueFromRes($res)
 {
@@ -389,6 +393,19 @@ function getSessionUsers($session_id)
     }
     return $res;
 };
+
+function getUserSessions($user_id) {
+    return getArrayRows(doQuerry('
+    SELECT * FROM (
+        SELECT amount, userses.session_id FROM (
+        SELECT user_session.user_id, user_session.session_id, bet, user_bank_history_id
+          FROM user_session LEFT JOIN user_session_history ON user_session_history.session_id=user_session.session_id 
+              AND user_session_history.user_id = ' . $user_id . ' AND user_session.user_id = ' . $user_id . '
+         ) userses LEFT JOIN user_bank_history
+        ON user_bank_history.id=userses.user_bank_history_id 
+       ) bets JOIN session using(session_id) order by amount IS NULL DESC'
+    ));
+}
 
 function sessionStart($session)
 {

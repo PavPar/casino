@@ -1,5 +1,6 @@
 <?php 
-include "./php/index_tpl.php";
+include "../php/index_tpl.php";
+checkAuth("./userLogin.php");
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -9,19 +10,19 @@ include "./php/index_tpl.php";
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Онлайн Казино</title>
-    <link rel="stylesheet" type="text/css" href="./styles/index.css">
+    <link rel="stylesheet" type="text/css" href="../styles/index.css">
 </head>
 
 <body class="page">
     <header class="header">
-        <h1 class="header__title">Добро пожаловать в казино!</h1>
+        <h1 class="header__title">Ваши игры</h1>
     </header>
     <main class="content">
     <section class="sessions">
             <nav class="sessions__navbar">
                 <?php
                 if (isUserLogged()) { echo '<form method="POST">
-                    <button class="good_button" formaction="./pages/myGames.php">Мои игры</button>
+                  <button class="good_button" formaction="../index.php">На главную</button>
                     <button class="good_button" formaction="./pages/createGame.php">Создать игру</button>
                 </form>';
                 }
@@ -32,10 +33,10 @@ include "./php/index_tpl.php";
             </nav>
             <form class="sessions__list" action="./pages/joinGame.php" method="POST">
             <?php 
-            $sessions = getSessions();
+            $sessions = getUserSessions($_SESSION["user"]["id"]);
             consolelog(json_encode($sessions));
             for ($i = 0; $i < count($sessions); $i++) {
-                setCardTPL( $sessions[$i]['name'], $sessions[$i]['info'], "0", "0", $sessions[$i]['session_id'], $sessions[$i]['state'], false, null);
+                setCardTPL( $sessions[$i]['name'], $sessions[$i]['info'], "0", "0", $sessions[$i]['session_id'], $sessions[$i]['state'], true, $sessions[$i]['amount']);
             }
             
                  

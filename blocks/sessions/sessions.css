@@ -7,5 +7,5 @@
     grid-column: 1fr;
     gap: 5px;
     overflow: hidden;
-    grid-template-rows: 5% 84% 5%;
+    grid-template-rows: 8% 81% 5%;
 }

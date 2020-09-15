@@ -44,35 +44,38 @@ function getListOptions($table_name, $field_id, $field_name)
                 <input class="form__input" placeholder="Имя сессии" name="name" required>
                 <input class="form__input" placeholder="Инфо" name="info">
 
-                <select  class="form__input" name="game_id">
+                <select id="game-selector" class="form__input" name="game_id" onchange='selectHandler(this)'>
                 <?php echo(getListOptions('game', 'game_id','game_name')) ?>
 
                 </select>
                  <select class="form__input" name="time" required>
-            <option value="120">Через 2 минут</option>
-            <option value="300">Через 5 минут</option>
-            <option value="900">Через 15 минут</option>
-            <option value="1800">Через полчаса</option>
-            <option value="3600">Через час</option>
-          </select>
+                  <option value="120">Через 2 минут</option>
+                  <option value="300">Через 5 минут</option>
+                  <option value="900">Через 15 минут</option>
+                  <option value="1800">Через полчаса</option>
+                  <option value="3600">Через час</option>
+                </select>
                 <button class="button button_type-home" type="submit">Добавить</button>
             </form>
 
         <?php
-$games = getGames();
-foreach ($games as $game) {
-    echo "<div class='game-desc' id='" . $game['game_slug'] . "' style='display:none'>";
-    setGameDescTPL('', '', $game['game_name'], $game['rules'], $game['game_slug']);
-    echo '</div>';
-}
-?>
+          $games = getGames();
+          foreach ($games as $game) {
+              echo "<div class='game-desc' id='" . $game['game_id'] . "' style='display:none'>";
+              setGameDescTPL('', '', $game['game_name'], $game['rules'], $game['game_slug']);
+              echo '</div>';
+          }
+          ?>
     </div>
     <script>
-      function radioHandler(radio) {
+      selectHandler(document.getElementById('game-selector'))
+      function selectHandler(select) {
+        console.log(select)
         let games = Array.from(document.querySelectorAll('.game-desc'))
+        console.log(select.options[select.selectedIndex].value)
         games.forEach(game => game.style.display='none')
-        document.getElementById(radio.value).style.display='block'
-        console.log(document.getElementById(radio.value))
+        document.getElementById(select.options[select.selectedIndex].value).style.display='block'
+        console.log(document.getElementById(select.options[select.selectedIndex].value))
       }
     </script>
     <footer></footer>

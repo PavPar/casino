@@ -7,7 +7,15 @@
   } else {
     $session = getSessionInfo(getData("id", true));
     $game = getGameInfo($session["game_id"]);
-    consolelog(json_encode($session));
+    consolelog(json_encode($game));
+    if ($session['starts_at'] < time()) {
+      $count = getSessionResult($_SESSION["user"]["id"], getData("id", true))[0]['amount'];
+      $wintext = $count < 0 ? "Проигрыш!":"Выигрыш!";
+      if ($count > 0) $count ='+' . $count;
+    } else {
+      $wintext = '';
+      $count = '00:00:00';
+    }
   }
 ?>
 <!DOCTYPE html>
@@ -16,7 +24,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $game['name'];?></title>
+    <title><?php echo $game['game_name'];?></title>
     <link rel="stylesheet" href="../styles/join.css">
     <script>
       const startsAt = <?php echo $session['starts_at'];?> + 5
@@ -31,12 +39,12 @@
     </header>
     <div class="join-container">
       <div class='user-list form-flex' >
-        <p id="timer" class="timer">00:00:00</p>
+        <p id="win-statnent" class="timer"><?php echo $wintext;?></p> 
+        <p id="timer" class="timer"><?php echo $count;?></p>
         <h1>Список Игроков</h1>
         <ul>
           <?php 
             $players = getSessionPlayers(getData("id", true));
-            consolelog(json_encode($players));
             foreach($players as $x)
             {
                 echo '<li>' . $x[ 'firstName' ] .' ' . $x[ 'middleName' ].' '. $x[ 'lastName' ]. '</li>';
@@ -63,7 +71,7 @@
           document.getElementById("timer").innerHTML = hours.padStart(2, '0') + ":" + minutes.padStart(2, '0') + ":" + seconds.padStart(2, '0');
           if (distance < 0) {
             clearInterval(x);
-            window.location =  window.location
+            location.reload();
           }
         }, 1000);
       }
